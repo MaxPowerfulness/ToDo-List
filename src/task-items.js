@@ -41,6 +41,7 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
     addTaskOptions();
     table.appendChild(newRow);
 
+    // Allows user to view the task information in a card format
     function viewTask(title, description, dueDate, dueTime, priority, event) {
         const viewContainer = document.createElement('div');
         viewContainer.classList.add('view-container');
@@ -54,11 +55,22 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         taskDueDate.textContent = dueDate;
         taskDueTime.textContent = dueTime;
         taskPriority.textContent = priority;
-        let taskItems = [taskName, taskDueDate, taskDueTime, taskDescription, taskPriority];
+        switch (priority) {
+            case 'High':
+                viewContainer.style.cssText = 'border: 3px solid red;';
+                break
+            case 'Medium':
+                viewContainer.style.cssText = 'border: 3px solid yellow;';
+                break
+            case 'Low':
+                viewContainer.style.cssText = 'border: 3px solid green;';
+                break
+        };
+        let taskItems = [taskName, taskDueDate, taskDueTime, taskDescription, taskPriority]; // List for appending task elements into viewContainer
         document.body.insertBefore(viewContainer, document.getElementById('backdrop'));
         for (let i = 0; i < 5; i++) {
-            if (event) {
-                taskItems[i].setAttribute('contentEditable', 'true');
+            if (event) { 
+                taskItems[i].setAttribute('contentEditable', 'true'); // Makes the card editable if the edit button is clicked
             };
             viewContainer.appendChild(taskItems[i]);
         }

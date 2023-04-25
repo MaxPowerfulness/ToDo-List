@@ -12,12 +12,15 @@ const overlay = document.getElementById('backdrop');
 
 // Event Listeners
 
+// Opens new task form when new task button is selected
 newTask.addEventListener('click', () => {
     taskFormContainer.style.display = 'block';
 })
 
+// Closes form when cancel is clicked
 cancelBtn.addEventListener('click', () => taskFormContainer.style.display = 'none');
 
+// Creates a new row (task item) in the task table and adds functionality to task buttons on form submit
 taskItemForm.addEventListener('submit', (event) => {
     event.preventDefault();
     taskFormContainer.style.display = 'none';
