@@ -50,12 +50,23 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         const taskDueDate = document.createElement('span');
         const taskDueTime = document.createElement('span');
         const taskPriority = document.createElement('p');
+        
+        // Creates select element that is avialable when user wants to edit priority level from card view
+        let priorityLevel = ['High', 'Medium', 'Low'];
+        const taskSelection = document.createElement('select');
+        for (let i = 0; i < 3; i++) {
+            const option = document.createElement('option');
+            option.setAttribute('value', priorityLevel[i]);
+            option.textContent = priorityLevel[i];
+            taskSelection.appendChild(option);
+        }
+
         taskName.textContent = title;
         taskDescription.textContent = description;
         taskDueDate.textContent = dueDate;
         taskDueTime.textContent = dueTime;
         taskPriority.textContent = priority;
-        switch (priority) {
+        switch (priority) { // Sets task card border depending on priority level
             case 'High':
                 viewContainer.style.cssText = 'border: 3px solid red;';
                 break
@@ -70,7 +81,11 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         document.body.insertBefore(viewContainer, document.getElementById('backdrop'));
         for (let i = 0; i < 5; i++) {
             if (event) { 
-                taskItems[i].setAttribute('contentEditable', 'true'); // Makes the card editable if the edit button is clicked
+                if (taskItems[i] == taskPriority) {
+                    taskItems[i] = taskSelection;
+                } else {
+                    taskItems[i].setAttribute('contentEditable', 'true'); // Makes the card editable if the edit button is clicked
+                }
             };
             viewContainer.appendChild(taskItems[i]);
         }
