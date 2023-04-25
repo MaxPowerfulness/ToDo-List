@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do</title>
+    <script src="./dist/main.bundle.js" defer></script>
+</head>
+<body>
+    <header>
+        <p>Site Logo Placeholder</p>
+    </header>
+    <nav>
+        <ul class="nav-filters">
+            <li>All</li>
+            <li>Today</li>
+            <li>This Week</li>
+            <li>This Month</li>
+            <li>Priority</li>
+        </ul>
+        <div class="nav-projects">
+            <p>Projects</p>
+        </div>
+    </nav>
+    <main>
+        <h1>Project Name</h1>
+        <div class="task-bar">
+            <h2>Tasks</h2>
+            <p class="new-task">+New Task</p>
+        </div>
+        <div id="taskItemFormContainer" class="form-container">
+            <form id="taskItemForm" action="">
+                <p><label for="title" >Title:<input type="text" id="title"></label></p>
+                <p><label for="description" >Description<textarea id="description" name="" id="" cols="30" rows="10"></textarea></label></p>
+                <p><label for="date">Due Date:<input id="date" type="date"></label></p>
+                <p><label for="time">Due Time:<input id="time" type="time"></label></p>
+                <p><label for="priority">Priority Level:
+                    <select id="priority" name="" id="">
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </label></p>
+                <div class="btnContainer">
+                    <button class='cancel' type="button">Cancel</button>
+                    <button>Add</button>
+                </div>
+            </form>
+        </div>
+        <table>
+        </table>
+    </main>
+    <div id="backdrop"></div>
+</body>
+</html>
