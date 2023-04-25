@@ -4,7 +4,7 @@ let counter = 0
 
 // Factory function usesd to create and append new tasks to the task table. 
 const taskFactory = (title, description, dueDate, dueTime, priority) => {
-    const table = document.querySelector('table');
+    const table = document.getElementById('taskTable');
     const newRow = document.createElement('tr');
     const taskInfo = document.createElement('td');
     taskInfo.innerHTML = `${title} <br> ${dueTime} ${dueDate}`;
@@ -77,6 +77,7 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
                 viewContainer.style.cssText = 'border: 3px solid green;';
                 break
         };
+
         let taskItems = [taskName, taskDueDate, taskDueTime, taskDescription, taskPriority]; // List for appending task elements into viewContainer
         document.body.insertBefore(viewContainer, document.getElementById('backdrop'));
         for (let i = 0; i < 5; i++) {

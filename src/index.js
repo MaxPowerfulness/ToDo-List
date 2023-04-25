@@ -4,7 +4,8 @@ import {taskFactory} from './task-items.js'
 
 //Global Varibales
 let counter = 0; // Used to make trash/view/edit icon class specific to each task item for task removal
-const newTask = document.querySelector('.new-task')
+const newTask = document.querySelector('.new-task');
+const newProject = document.querySelector('.new-project');
 const taskFormContainer = document.getElementById('taskItemFormContainer');
 const taskItemForm = document.getElementById('taskItemForm');
 const cancelBtn = document.querySelector('.cancel');

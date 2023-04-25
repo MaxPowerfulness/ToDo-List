@@ -1,4 +1,4 @@
-/* CSS reser */
+/* CSS reset */
 * {
     margin: 0px;
     padding: 0px;
@@ -9,9 +9,16 @@ html, body {
     height: 100%;
 }
 
+ul {
+    list-style: none;
+}
+
 /* Custom variables */
 :root {
     --section-space: 15px;
+    --small-padding: 10px;
+    --med-padding: 25px;
+    --large-padding: 40px;
 }
 
 /* Header */
@@ -28,6 +35,26 @@ nav {
     background-color: forestgreen;
     width: 15%;
     height: 90vh;
+}
+
+.nav-filters {
+    padding: var(--med-padding) 0px var(--med-padding) var(--section-space);
+
+}
+
+.nav-filters li {
+    padding-bottom: var(--small-padding);
+}
+
+.nav-projects {
+    
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px black solid;
+    padding: 0px var(--section-space) 0px var(--section-space);
 }
 
 /* Main */
@@ -52,17 +79,17 @@ main h1 {
     width: 70%;
 }
 
-table {
+#taskTable {
     width: 70%;
     padding-top: 5px;
 }
 
 
-td {
+#taskTable td {
     padding: 5px;
 }
 
-td:not(:first-child) {
+#taskTable td:not(:first-child) {
     width: 40px;
     height: 40px;
 }
