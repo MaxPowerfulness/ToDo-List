@@ -24,13 +24,22 @@
                 <h3>Projects</h3>
                 <p class="new-project">+New</p>
             </div>
+            <div id="projectFormContainer" class="form-container">
+                <form id="projectForm" action="">
+                    <p><label for="projectName">Name:<input type="text" name="" id="projectName"></label></p>
+                    <div class="btnContainer">
+                        <button class='project-cancel' type="button">Cancel</button>
+                        <button>Add</button>
+                    </div>
+                </form>
+            </div>
             <table id="projectTable">
 
             </table>
         </div>
     </nav>
     <main>
-        <h1>Project Name</h1>
+        <h1 class="project-name">Project Name</h1>
         <div class="task-bar">
             <h2>Tasks</h2>
             <p class="new-task">+New Task</p>
@@ -49,7 +58,7 @@
                     </select>
                 </label></p>
                 <div class="btnContainer">
-                    <button class='cancel' type="button">Cancel</button>
+                    <button class='task-cancel' type="button">Cancel</button>
                     <button>Add</button>
                 </div>
             </form>

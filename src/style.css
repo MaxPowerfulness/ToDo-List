@@ -46,10 +46,6 @@ nav {
     padding-bottom: var(--small-padding);
 }
 
-.nav-projects {
-    
-}
-
 .project-header {
     display: flex;
     justify-content: space-between;

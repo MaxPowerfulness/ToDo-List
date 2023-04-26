@@ -1,25 +1,27 @@
 import './style.css';
 import { compareAsc, format } from 'date-fns';
-import {taskFactory} from './task-items.js'
+import {taskFactory} from './task-items.js';
+import {projectFactory} from './projects.js';
 
 //Global Varibales
 let counter = 0; // Used to make trash/view/edit icon class specific to each task item for task removal
 const newTask = document.querySelector('.new-task');
 const newProject = document.querySelector('.new-project');
 const taskFormContainer = document.getElementById('taskItemFormContainer');
+const projectFormContainer = document.getElementById('projectFormContainer');
 const taskItemForm = document.getElementById('taskItemForm');
-const cancelBtn = document.querySelector('.cancel');
+const projectForm = document.getElementById('projectForm');
+const taskCancelBtn = document.querySelector('.task-cancel');
+const projectCancelBtn = document.querySelector('.project-cancel');
 const overlay = document.getElementById('backdrop');
 
-// Event Listeners
+// Task Event Listeners
 
 // Opens new task form when new task button is selected
-newTask.addEventListener('click', () => {
-    taskFormContainer.style.display = 'block';
-})
+newTask.addEventListener('click', () => taskFormContainer.style.display = 'block');
 
-// Closes form when cancel is clicked
-cancelBtn.addEventListener('click', () => taskFormContainer.style.display = 'none');
+// Closes task form when cancel is clicked
+taskCancelBtn.addEventListener('click', () => taskFormContainer.style.display = 'none');
 
 // Creates a new row (task item) in the task table and adds functionality to task buttons on form submit
 taskItemForm.addEventListener('submit', (event) => {
@@ -41,6 +43,7 @@ taskItemForm.addEventListener('submit', (event) => {
     counter++;
 })
 
+// Removes overlay from card view and removes card from DOM
 overlay.addEventListener('click', () => {
     overlay.classList.toggle('overlay')
     document.body.removeChild(document.querySelector('.view-container'));
@@ -56,9 +59,7 @@ function initialize() {
     viewIcon.addEventListener('click', () => {
         newItem.viewTask('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High');
         overlay.classList.toggle('overlay')
-    });
-    console.log(editIcon);
-    editIcon.addEventListener('click', (event) => {
+    });projectName('click', (event) => {
         newItem.viewTask('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High', event);
         overlay.classList.toggle('overlay');
     });
@@ -66,5 +67,20 @@ function initialize() {
     trashIcon.addEventListener('click', () => newItem.deleteTableRow());
     counter++
 }
+
+// Project Event Listeners
+
+// Opens new project form when new task button is selected
+newProject.addEventListener('click', () => projectFormContainer.style.display = 'block');
+
+// Closes project form when cancel is clicked
+projectCancelBtn.addEventListener('click', () => projectFormContainer.style.display = 'none');
+
+projectForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    projectFormContainer.style.display = 'none';
+    projectFactory(document.getElementById('projectName').value);
+});
+
 
 initialize();
