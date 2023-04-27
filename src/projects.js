@@ -31,6 +31,25 @@ const projectFactory = (name) => {
     const deleteProject = () => {
         table.removeChild(newRow);
     };
+
+    // Allows the user to change the current name of the project once it has been created
+    const editProjectName = () => {
+        // Replaces element with input element and adds a save button used to push the name change
+        const editableName = document.createElement('input');
+        const saveName = document.createElement('button');
+        saveName.textContent = 'Save';
+        projectName.replaceWith(editableName);
+        editableName.parentNode.insertBefore(saveName, editableName.nextSibling)
+
+        saveName.addEventListener('click', () => {
+            projectName.textContent = editableName.value;
+            projectHeader.textContent = editableName.value;
+            editableName.replaceWith(projectName);
+            saveName.parentNode.removeChild(saveName);
+        });
+    };
+
+    return {editProjectName}
 };
 
 export {projectFactory}

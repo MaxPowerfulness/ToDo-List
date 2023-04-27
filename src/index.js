@@ -4,7 +4,8 @@ import {taskFactory} from './task-items.js';
 import {projectFactory} from './projects.js';
 
 //Global Varibales
-let counter = 0; // Used to make trash/view/edit icon class specific to each task item for task removal
+let taskCounter = 0; // Used to make trash/view/edit icon class specific to each task item for task removal
+let projectCounter = 0;
 const newTask = document.querySelector('.new-task');
 const newProject = document.querySelector('.new-project');
 const taskFormContainer = document.getElementById('taskItemFormContainer');
@@ -31,6 +32,7 @@ taskItemForm.addEventListener('submit', (event) => {
     const trashIcon = document.querySelector(`.trash-${counter}`);
     const viewIcon = document.querySelector(`.view-${counter}`);
     const editIcon = document.querySelector(`.edit-${counter}`);
+    
     trashIcon.addEventListener('click', () => newItem.deleteTableRow());
     viewIcon.addEventListener('click', () => {
         newItem.viewTask(document.getElementById('title').value, document.getElementById('description').value, document.getElementById('date').value, document.getElementById('time').value, document.getElementById('priority').value);
@@ -53,19 +55,20 @@ overlay.addEventListener('click', () => {
 // Creates a default task to give users an example
 function initialize() {
     const newItem = taskFactory('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High');
-    const trashIcon = document.querySelector(`.trash-${counter}`);
-    const viewIcon = document.querySelector(`.view-${counter}`);
-    const editIcon = document.querySelector(`.edit-${counter}`);
+    const trashIcon = document.querySelector(`.trash-${taskCounter}`);
+    const viewIcon = document.querySelector(`.view-${taskCounter}`);
+    const editIcon = document.querySelector(`.edit-${taskCounter}`);
     viewIcon.addEventListener('click', () => {
-        newItem.viewTask('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High');
+        newItem.viewTask('Test Task', 'Test Description', '11-11-11asdasdasd', '11:00 AM', 'High');
         overlay.classList.toggle('overlay')
-    });projectName('click', (event) => {
+    });
+    editIcon.addEventListener('click', (event) => {
         newItem.viewTask('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High', event);
         overlay.classList.toggle('overlay');
     });
 
     trashIcon.addEventListener('click', () => newItem.deleteTableRow());
-    counter++
+    taskCounter++
 }
 
 // Project Event Listeners
@@ -79,7 +82,16 @@ projectCancelBtn.addEventListener('click', () => projectFormContainer.style.disp
 projectForm.addEventListener('submit', (event) => {
     event.preventDefault();
     projectFormContainer.style.display = 'none';
-    projectFactory(document.getElementById('projectName').value);
+    const newProject = projectFactory(document.getElementById('projectName').value);
+
+    const editIcon = document.querySelector(`.project-edit-${projectCounter}`);
+    console.log(editIcon);
+    const trashIcon = document.querySelector(`.project-edit-${projectCounter}`);
+    editIcon.addEventListener('click', () => {
+        newProject.editProjectName();
+        
+    });
+    projectCounter++
 });
 
 
