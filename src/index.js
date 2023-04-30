@@ -29,9 +29,27 @@ taskItemForm.addEventListener('submit', (event) => {
     event.preventDefault();
     taskFormContainer.style.display = 'none';
     const newItem = taskFactory(document.getElementById('title').value, document.getElementById('description').value, document.getElementById('date').value, document.getElementById('time').value, document.getElementById('priority').value);
-    const trashIcon = document.querySelector(`.trash-${counter}`);
-    const viewIcon = document.querySelector(`.view-${counter}`);
-    const editIcon = document.querySelector(`.edit-${counter}`);
+    document.querySelectorAll('tbody').forEach(project => {
+        console.log('backgroundColor', project.style.backgroundColor);
+        if (project.style.backgroundColor == "rgba(255, 255, 255, 0.5)") {
+            console.log('inside if');
+            let storedProject = JSON.parse(localStorage.getItem(`${project.firstElementChild.firstElementChild.textContent}`));
+            console.log('storedProject', storedProject);
+            let task = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                priority: document.getElementById('priority').value
+            };
+            storedProject.push(task);
+            localStorage.setItem(`${project.firstElementChild.firstElementChild.textContent}`, JSON.stringify(storedProject));
+        };
+    });
+    
+    const trashIcon = document.querySelector(`.trash-${taskCounter}`);
+    const viewIcon = document.querySelector(`.view-${taskCounter}`);
+    const editIcon = document.querySelector(`.edit-${taskCounter}`);
     
     trashIcon.addEventListener('click', () => newItem.deleteTableRow());
     viewIcon.addEventListener('click', () => {
@@ -42,7 +60,7 @@ taskItemForm.addEventListener('submit', (event) => {
         newItem.viewTask(document.getElementById('title').value, document.getElementById('description').value, document.getElementById('date').value, document.getElementById('time').value, document.getElementById('priority').value, event);
         overlay.classList.toggle('overlay');
     });
-    counter++;
+    taskCounter++;
 })
 
 // Removes overlay from card view and removes card from DOM
@@ -85,7 +103,6 @@ projectForm.addEventListener('submit', (event) => {
     const newProject = projectFactory(document.getElementById('projectName').value);
 
     const editIcon = document.querySelector(`.project-edit-${projectCounter}`);
-    console.log(editIcon);
     const trashIcon = document.querySelector(`.project-edit-${projectCounter}`);
     editIcon.addEventListener('click', () => {
         newProject.editProjectName();

@@ -53,6 +53,32 @@ nav {
     padding: 0px var(--section-space) 0px var(--section-space);
 }
 
+#projectTable {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+#projectTable tbody > tr > td {
+    width: 100%;
+}
+
+#projectTable tbody:hover > tr > td {
+    border-color: aqua;
+}
+
+#projectTable td {
+    border-top: 3px black solid;
+    border-bottom: 3px black solid;
+}
+
+#projectTable td:first-child {
+     border-left: 3px black solid;
+}
+
+#projectTable td:last-child {
+     border-right: 3px black solid;
+}
+
 /* Main */
 main {
     display: flex;

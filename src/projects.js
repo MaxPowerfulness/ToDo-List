@@ -4,11 +4,20 @@ let counter = 0;
 const projectFactory = (name) => {
     const table = document.getElementById('projectTable');
     const projectHeader = document.querySelector('.project-name');
+    const newBody = document.createElement('tbody');
     const newRow = document.createElement('tr');
     const projectName = document.createElement('td');
 
+    // Changes background color of row to indicate which project is being selected.
+    newBody.addEventListener('click', () => {
+        document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: transparent;")
+        newBody.style.cssText = "background-color: rgb(255, 255, 255, 0.5);"
+        projectHeader.textContent = name;
+    });
+
     projectHeader.textContent = name;
     projectName.textContent = name;
+    newBody.appendChild(newRow);
     newRow.appendChild(projectName);
 
     const addProjectOptions = () => {
@@ -23,10 +32,10 @@ const projectFactory = (name) => {
             newCell.appendChild(img);
             newRow.appendChild(newCell);
         };
-        table.appendChild(newRow);
         counter++
     };
     addProjectOptions();
+    table.appendChild(newBody);
 
     const deleteProject = () => {
         table.removeChild(newRow);
@@ -49,7 +58,13 @@ const projectFactory = (name) => {
         });
     };
 
+    // Saving project to local storage
+    localStorage.setItem(`${name}`, JSON.stringify([]));
+
+    console.log(document.querySelectorAll('tbody'));
+    console.log('value', newBody.firstElementChild.firstElementChild.textContent);
     return {editProjectName}
 };
 
 export {projectFactory}
+

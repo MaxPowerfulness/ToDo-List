@@ -97,6 +97,12 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
     function deleteTableRow() {
         table.removeChild(newRow);
     };
+
+    // Saving task to local storage
+    function saveToLocalStorage(project) {
+        
+    }
+
     
     return {deleteTableRow, viewTask}
 };
