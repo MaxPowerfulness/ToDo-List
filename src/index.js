@@ -4,7 +4,6 @@ import {taskFactory} from './task-items.js';
 import {projectFactory} from './projects.js';
 
 //Global Varibales
-let taskCounter = 0; // Used to make trash/view/edit icon class specific to each task item for task removal
 let projectCounter = 0;
 const newTask = document.querySelector('.new-task');
 const newProject = document.querySelector('.new-project');
@@ -30,11 +29,8 @@ taskItemForm.addEventListener('submit', (event) => {
     taskFormContainer.style.display = 'none';
     const newItem = taskFactory(document.getElementById('title').value, document.getElementById('description').value, document.getElementById('date').value, document.getElementById('time').value, document.getElementById('priority').value);
     document.querySelectorAll('tbody').forEach(project => {
-        console.log('backgroundColor', project.style.backgroundColor);
         if (project.style.backgroundColor == "rgba(255, 255, 255, 0.5)") {
-            console.log('inside if');
             let storedProject = JSON.parse(localStorage.getItem(`${project.firstElementChild.firstElementChild.textContent}`));
-            console.log('storedProject', storedProject);
             let task = {
                 title: document.getElementById('title').value,
                 description: document.getElementById('description').value,
@@ -46,22 +42,7 @@ taskItemForm.addEventListener('submit', (event) => {
             localStorage.setItem(`${project.firstElementChild.firstElementChild.textContent}`, JSON.stringify(storedProject));
         };
     });
-    
-    const trashIcon = document.querySelector(`.trash-${taskCounter}`);
-    const viewIcon = document.querySelector(`.view-${taskCounter}`);
-    const editIcon = document.querySelector(`.edit-${taskCounter}`);
-    
-    trashIcon.addEventListener('click', () => newItem.deleteTableRow());
-    viewIcon.addEventListener('click', () => {
-        newItem.viewTask(document.getElementById('title').value, document.getElementById('description').value, document.getElementById('date').value, document.getElementById('time').value, document.getElementById('priority').value);
-        overlay.classList.toggle('overlay')
-    });
-    editIcon.addEventListener('click', (event) => {
-        newItem.viewTask(document.getElementById('title').value, document.getElementById('description').value, document.getElementById('date').value, document.getElementById('time').value, document.getElementById('priority').value, event);
-        overlay.classList.toggle('overlay');
-    });
-    taskCounter++;
-})
+});
 
 // Removes overlay from card view and removes card from DOM
 overlay.addEventListener('click', () => {
@@ -73,20 +54,6 @@ overlay.addEventListener('click', () => {
 // Creates a default task to give users an example
 function initialize() {
     const newItem = taskFactory('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High');
-    const trashIcon = document.querySelector(`.trash-${taskCounter}`);
-    const viewIcon = document.querySelector(`.view-${taskCounter}`);
-    const editIcon = document.querySelector(`.edit-${taskCounter}`);
-    viewIcon.addEventListener('click', () => {
-        newItem.viewTask('Test Task', 'Test Description', '11-11-11asdasdasd', '11:00 AM', 'High');
-        overlay.classList.toggle('overlay')
-    });
-    editIcon.addEventListener('click', (event) => {
-        newItem.viewTask('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High', event);
-        overlay.classList.toggle('overlay');
-    });
-
-    trashIcon.addEventListener('click', () => newItem.deleteTableRow());
-    taskCounter++
 }
 
 // Project Event Listeners
@@ -100,16 +67,7 @@ projectCancelBtn.addEventListener('click', () => projectFormContainer.style.disp
 projectForm.addEventListener('submit', (event) => {
     event.preventDefault();
     projectFormContainer.style.display = 'none';
-    const newProject = projectFactory(document.getElementById('projectName').value);
-
-    const editIcon = document.querySelector(`.project-edit-${projectCounter}`);
-    const trashIcon = document.querySelector(`.project-edit-${projectCounter}`);
-    editIcon.addEventListener('click', () => {
-        newProject.editProjectName();
-        
-    });
-    projectCounter++
+    projectFactory(document.getElementById('projectName').value);
 });
-
 
 initialize();

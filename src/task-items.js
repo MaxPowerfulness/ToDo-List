@@ -1,6 +1,6 @@
 // Globabl varibales
 import { add } from "date-fns";
-let counter = 0
+const overlay = document.getElementById('backdrop');
 
 // Factory function usesd to create and append new tasks to the task table. 
 const taskFactory = (title, description, dueDate, dueTime, priority) => {
@@ -8,6 +8,8 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
     const newRow = document.createElement('tr');
     const taskInfo = document.createElement('td');
     taskInfo.innerHTML = `${title} <br> ${dueTime} ${dueDate}`;
+
+// Adding task to table
 
     // Sets border color to indiciate priority level of a task item
     switch (priority) {
@@ -21,27 +23,40 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
             taskInfo.style.cssText = 'border-left: 3px solid green;';
             break
     };
-    newRow.appendChild(taskInfo);
 
     // Adds icons/features present in all task items
     const addTaskOptions = () => {
         let taskOptions = ['./images/edit.svg', './images/icons8-trash-30.png', './images/icons8-eye-30.png'];
-        let classNames = [`edit-${counter}`, `trash-${counter}`, `view-${counter}`];
-        for (let i = 0; i <= 2; i++) {
+        let iconNames = ['edit', 'trash', 'view'];
+        for (let i = 0; i <= 2; i++) { // Adds event listeners for icon function specific to the task
             const newCell = document.createElement('td');
             const img = document.createElement('img');
             img.src=taskOptions[i];
-            img.classList.add(classNames[i]);
+            if (iconNames[i] === 'edit') {
+                img.addEventListener('click', (event) => {
+                    viewTask(title, description, dueDate, dueTime, priority, event);
+                    overlay.classList.toggle('overlay');
+                });
+            } else if (iconNames[i] === 'trash') {
+                img.addEventListener('click', () => deleteTableRow());
+            } else {
+                img.addEventListener('click', () => {
+                    viewTask(title, description, dueDate, dueTime, priority);
+                    overlay.classList.toggle('overlay');
+                });
+            };
             newCell.appendChild(img);
             newRow.appendChild(newCell);
         };
-        counter++
     };
-
+    
+    newRow.appendChild(taskInfo);
     addTaskOptions();
     table.appendChild(newRow);
 
-    // Allows user to view the task information in a card format
+// Methods
+
+    // Allows user to view the task information in a card format.
     function viewTask(title, description, dueDate, dueTime, priority, event) {
         const viewContainer = document.createElement('div');
         viewContainer.classList.add('view-container');
@@ -50,16 +65,8 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         const taskDueDate = document.createElement('span');
         const taskDueTime = document.createElement('span');
         const taskPriority = document.createElement('p');
-        
-        // Creates select element that is avialable when user wants to edit priority level from card view
-        let priorityLevel = ['High', 'Medium', 'Low'];
-        const taskSelection = document.createElement('select');
-        for (let i = 0; i < 3; i++) {
-            const option = document.createElement('option');
-            option.setAttribute('value', priorityLevel[i]);
-            option.textContent = priorityLevel[i];
-            taskSelection.appendChild(option);
-        }
+        let taskItems = [taskName, taskDueDate, taskDueTime, taskDescription, taskPriority]; // List for appending task elements into viewContainer
+    
 
         taskName.textContent = title;
         taskDescription.textContent = description;
@@ -78,8 +85,20 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
                 break
         };
 
-        let taskItems = [taskName, taskDueDate, taskDueTime, taskDescription, taskPriority]; // List for appending task elements into viewContainer
         document.body.insertBefore(viewContainer, document.getElementById('backdrop'));
+        
+        // Editing options
+
+        // Creates select element that is avialable when user wants to edit priority level from card view
+        let priorityLevel = ['High', 'Medium', 'Low'];
+        const taskSelection = document.createElement('select');
+        for (let i = 0; i < 3; i++) {
+            const option = document.createElement('option');
+            option.setAttribute('value', priorityLevel[i]);
+            option.textContent = priorityLevel[i];
+            taskSelection.appendChild(option);
+        }
+        // Sets elements as editable, adds select options for priority
         for (let i = 0; i < 5; i++) {
             if (event) { 
                 if (taskItems[i] == taskPriority) {
@@ -92,19 +111,21 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         }
     }
 
-
     // Removes row from table
     function deleteTableRow() {
         table.removeChild(newRow);
+        document.querySelectorAll('tbody').forEach(project => { // Removes task from local storage
+            if (project.style.backgroundColor == "rgba(255, 255, 255, 0.5)") {
+                let storedProject = JSON.parse(localStorage.getItem(`${project.firstElementChild.firstElementChild.textContent}`));
+                storedProject.forEach(task => {
+                    if (task.title == `${title}`) {
+                        JSON.stringify(storedProject.splice(storedProject.indexOf(task), 1));
+                        localStorage.setItem(`${project.firstElementChild.firstElementChild.textContent}` , JSON.stringify(storedProject));
+                    }
+                })
+            }
+        })
     };
-
-    // Saving task to local storage
-    function saveToLocalStorage(project) {
-        
-    }
-
-    
-    return {deleteTableRow, viewTask}
 };
 
 export {taskFactory};
