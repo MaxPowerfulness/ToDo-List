@@ -62,11 +62,10 @@ const projectFactory = (name) => {
 
         saveName.addEventListener('click', () => {
             projectName.textContent = editableName.value;
-            console.log('editable name', editableName.value);
             document.querySelector('.project-name').textContent = editableName.value
-            console.log('projectHeader', document.querySelector('.project-name'));
             editableName.replaceWith(projectName);
             saveName.parentNode.removeChild(saveName);
+            changeKeyName(editableName.value);
         });
     };
 
@@ -74,6 +73,13 @@ const projectFactory = (name) => {
         table.removeChild(newBody);
         localStorage.removeItem(`${name}`); // Removes project from local storage
     };
+
+    function changeKeyName(newName) {
+        let projectTasks = JSON.parse(localStorage.getItem(`${name}`));
+        localStorage.setItem(`${newName}`, JSON.stringify(projectTasks));
+        localStorage.removeItem(`${name}`);
+        name = newName;
+    }
 
 // Event Listeners
 
