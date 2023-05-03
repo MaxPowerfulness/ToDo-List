@@ -41,6 +41,7 @@ const projectFactory = (name) => {
     };
     addProjectOptions();
     table.appendChild(newBody);
+    console.log(newBody);
 
 // Methods
 
@@ -48,7 +49,7 @@ const projectFactory = (name) => {
     function displayTask() {
         let taskArray = JSON.parse(localStorage.getItem(`${name}`));
         document.getElementById('taskTable').innerHTML = ''
-        taskArray.forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority),)
+        taskArray.forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority))
     };
 
     // Allows the user to change the current name of the project once it has been created

@@ -84,32 +84,82 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
                 viewContainer.style.cssText = 'border: 3px solid green;';
                 break
         };
-
+        if (event) {
+            const editables = editTask(taskName, taskItems);
+            editables.forEach(task => viewContainer.appendChild(task));
+        } else {
+            taskItems.forEach(task => viewContainer.appendChild(task));
+        };
         document.body.insertBefore(viewContainer, document.getElementById('backdrop'));
-        
-        // Editing options
+    };
 
+    // Allows users to edit task information once they are already created
+    function editTask(taskName, taskItemList) {
         // Creates select element that is avialable when user wants to edit priority level from card view
         let priorityLevel = ['High', 'Medium', 'Low'];
-        const taskSelection = document.createElement('select');
+        const editablePriority = document.createElement('select');
         for (let i = 0; i < 3; i++) {
             const option = document.createElement('option');
             option.setAttribute('value', priorityLevel[i]);
             option.textContent = priorityLevel[i];
-            taskSelection.appendChild(option);
+            editablePriority.appendChild(option);
         }
-        // Sets elements as editable, adds select options for priority
-        for (let i = 0; i < 5; i++) {
-            if (event) { 
-                if (taskItems[i] == taskPriority) {
-                    taskItems[i] = taskSelection;
-                } else {
-                    taskItems[i].setAttribute('contentEditable', 'true'); // Makes the card editable if the edit button is clicked
-                }
-            };
-            viewContainer.appendChild(taskItems[i]);
-        }
-    }
+
+        // Creates new input elements that users can enter information to edit task information
+        const editableName = document.createElement('input');
+        editableName.setAttribute('value', title);
+        const editableDescription = document.createElement('textArea');
+        editableDescription.value = `${description}`;
+        const editableDueDate = document.createElement('input');
+        editableDueDate.setAttribute('value', dueDate);
+        editableDueDate.setAttribute('type', 'date');
+        const editableDueTime = document.createElement('input');
+        editableDueTime.setAttribute('value', dueTime);
+        editableDueTime.setAttribute('type', 'time');
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Save';
+        
+        let editableList = [editableName, editableDescription, editableDueDate, editableDueTime, editablePriority, saveBtn]; // For appending editable elements into view card
+        
+        // Saves changes
+        saveBtn.addEventListener('click', () => {
+            // Updates local storage
+            document.querySelectorAll('tbody').forEach(project => { // Looks for project in storage
+                if (project.style.backgroundColor == "rgba(255, 255, 255, 0.5)") {
+                    let storedProject = JSON.parse(localStorage.getItem(`${project.firstElementChild.firstElementChild.textContent}`));
+                    storedProject.forEach(task => {
+                        if (task.title == taskName.textContent) { // Iterates through the task and updates each property
+                            for (let i = 0; i < Object.keys(task).length; i++) {
+                                if (Object.keys(task)[i] == 'title') {
+                                    task.title = editableName.value;
+                                } else if (Object.keys(task)[i] == 'description') {
+                                    task.description = editableDescription.value;
+                                } else if (Object.keys(task)[i] == 'date') {
+                                    task.date = editableDueDate.value;
+                                } else if (Object.keys(task)[i] == 'time') {
+                                    task.time = editableDueTime.value;
+                                } else if (Object.keys(task)[i] == 'priority') {
+                                    task.priority = editablePriority.value;
+                                };
+                            };
+                        };
+                    });
+
+                    localStorage.setItem(`${project.firstElementChild.firstElementChild.textContent}`, JSON.stringify(storedProject)); // Saves changes in local storages
+                    
+                    document.getElementById('taskTable').innerHTML = '';  // Clears and updates task table to reflect changes
+                    storedProject.forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
+                    taskItemList.forEach((task, index) => task.textContent = `${editableList[index].value}`);
+                    
+                };
+            });
+            // Closes task view
+            overlay.classList.toggle('overlay');
+            document.body.removeChild(document.querySelector('.view-container'));
+        });
+
+        return editableList
+    };
 
     // Removes row from table
     function deleteTableRow() {
@@ -121,10 +171,10 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
                     if (task.title == `${title}`) {
                         JSON.stringify(storedProject.splice(storedProject.indexOf(task), 1));
                         localStorage.setItem(`${project.firstElementChild.firstElementChild.textContent}` , JSON.stringify(storedProject));
-                    }
-                })
-            }
-        })
+                    };
+                });
+            };
+        });
     };
 };
 

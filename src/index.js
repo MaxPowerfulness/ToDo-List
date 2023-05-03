@@ -27,7 +27,7 @@ taskCancelBtn.addEventListener('click', () => taskFormContainer.style.display = 
 taskItemForm.addEventListener('submit', (event) => {
     event.preventDefault();
     taskFormContainer.style.display = 'none';
-    const newItem = taskFactory(document.getElementById('title').value, document.getElementById('description').value, document.getElementById('date').value, document.getElementById('time').value, document.getElementById('priority').value);
+    taskFactory(document.getElementById('title').value, document.getElementById('description').value, document.getElementById('date').value, document.getElementById('time').value, document.getElementById('priority').value);
     document.querySelectorAll('tbody').forEach(project => {
         if (project.style.backgroundColor == "rgba(255, 255, 255, 0.5)") {
             let storedProject = JSON.parse(localStorage.getItem(`${project.firstElementChild.firstElementChild.textContent}`));
@@ -53,7 +53,7 @@ overlay.addEventListener('click', () => {
 
 // Creates a default task to give users an example
 function initialize() {
-    const newItem = taskFactory('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High');
+    taskFactory('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High');
 }
 
 // Project Event Listeners
