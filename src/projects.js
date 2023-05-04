@@ -40,8 +40,9 @@ const projectFactory = (name) => {
         counter++
     };
     addProjectOptions();
+    selectProject();
     table.appendChild(newBody);
-    console.log(newBody);
+    
 
 // Methods
 
@@ -70,26 +71,31 @@ const projectFactory = (name) => {
         });
     };
 
+    // Removes the project from the project table and in local storage
     function removeProject() {
         table.removeChild(newBody);
         localStorage.removeItem(`${name}`); // Removes project from local storage
     };
 
+    // Changes the name of the project in local storage
     function changeKeyName(newName) {
         let projectTasks = JSON.parse(localStorage.getItem(`${name}`));
         localStorage.setItem(`${newName}`, JSON.stringify(projectTasks));
         localStorage.removeItem(`${name}`);
         name = newName;
+    };
+
+    // Highlights the project on the project table and changes the project name header
+    function selectProject() {
+        document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: transparent;")
+        newBody.style.cssText = "background-color: rgb(255, 255, 255, 0.5);"
+        projectHeader.textContent = name;
     }
 
 // Event Listeners
 
     // Changes background color of row to indicate which project is being selected.
-    newBody.addEventListener('click', () => {
-        document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: transparent;")
-        newBody.style.cssText = "background-color: rgb(255, 255, 255, 0.5);"
-        projectHeader.textContent = name;
-    });
+    newBody.addEventListener('click', () => selectProject());
 
 
     // 
