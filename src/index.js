@@ -1,10 +1,9 @@
 import './style.css';
-import { compareAsc, format } from 'date-fns';
 import {taskFactory} from './task-items.js';
 import {projectFactory} from './projects.js';
+import {sortAllTasksByDate, displayTodayTasks, displayWeekTasks, displayMonthTasks, displayByPriority} from './task-sort.js';
 
 //Global Varibales
-let projectCounter = 0;
 const newTask = document.querySelector('.new-task');
 const newProject = document.querySelector('.new-project');
 const taskFormContainer = document.getElementById('taskItemFormContainer');
@@ -14,8 +13,53 @@ const projectForm = document.getElementById('projectForm');
 const taskCancelBtn = document.querySelector('.task-cancel');
 const projectCancelBtn = document.querySelector('.project-cancel');
 const overlay = document.getElementById('backdrop');
+const projectHeader = document.querySelector('.project-name');
+const all = document.querySelector('.all');
+const today = document.querySelector('.today');
+const thisWeek = document.querySelector('.week');
+const thisMonth = document.querySelector('.month');
+const priorityView = document.querySelector('.priority');
 
-// Task Event Listeners
+// Task view Event Listeners
+
+all.addEventListener('click', () => {
+    const allTasks = createMergedTaskList()
+    sortAllTasksByDate(allTasks);
+    document.getElementById('taskTable').innerHTML = '';
+    allTasks.forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
+    projectHeader.textContent = "All";
+});
+
+today.addEventListener('click', () => {
+    const allTasks = createMergedTaskList();
+    document.getElementById('taskTable').innerHTML = '';
+    displayTodayTasks(allTasks).forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
+    projectHeader.textContent = "Today";
+});
+
+thisWeek.addEventListener('click', () => {
+    const allTasks = createMergedTaskList();
+    document.getElementById('taskTable').innerHTML = '';
+    displayWeekTasks(allTasks).forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
+    projectHeader.textContent = "This Week";
+});
+
+thisMonth.addEventListener('click', () => {
+    const allTasks = createMergedTaskList();
+    document.getElementById('taskTable').innerHTML = '';
+    displayMonthTasks(allTasks).forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
+    projectHeader.textContent = "This Month";
+});
+
+priorityView.addEventListener('click', () => {
+    const allTasks = createMergedTaskList();
+    sortAllTasksByDate(allTasks);
+    document.getElementById('taskTable').innerHTML = '';
+    displayByPriority(allTasks).forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
+    projectHeader.textContent = "Priority";
+});
+
+// Task table Event Listeners
 
 // Opens new task form when new task button is selected
 newTask.addEventListener('click', () => taskFormContainer.style.display = 'block');
@@ -44,18 +88,6 @@ taskItemForm.addEventListener('submit', (event) => {
     });
 });
 
-// Removes overlay from card view and removes card from DOM
-overlay.addEventListener('click', () => {
-    overlay.classList.toggle('overlay')
-    document.body.removeChild(document.querySelector('.view-container'));
-})
-
-
-// Creates a default task to give users an example
-function initialize() {
-    taskFactory('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High');
-}
-
 // Project Event Listeners
 
 // Opens new project form when new task button is selected
@@ -69,5 +101,31 @@ projectForm.addEventListener('submit', (event) => {
     projectFormContainer.style.display = 'none';
     projectFactory(document.getElementById('projectName').value);
 });
+
+// Removes overlay from card view and removes card from DOM
+overlay.addEventListener('click', () => {
+    overlay.classList.toggle('overlay')
+    document.body.removeChild(document.querySelector('.view-container'));
+})
+
+
+// Functions
+
+// Creates a default task to give users an example
+function initialize() {
+    taskFactory('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High');
+};
+
+// Creates a list of all tasks saved in the local storage and returns it
+function createMergedTaskList() {
+    const tasksFromLocal = Object.values(localStorage);
+    let tasks = [];
+    for (let i = 0; i < tasksFromLocal.length; i++) {
+        tasks = tasks.concat(JSON.parse(tasksFromLocal[i]));
+    };
+    const mergedTasks = tasks.flat(1);
+
+    return mergedTasks;
+}
 
 initialize();

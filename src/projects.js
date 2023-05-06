@@ -49,8 +49,8 @@ const projectFactory = (name) => {
     // Clears the task table and loads in project specific tasks
     function displayTask() {
         let taskArray = JSON.parse(localStorage.getItem(`${name}`));
-        document.getElementById('taskTable').innerHTML = ''
-        taskArray.forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority))
+        document.getElementById('taskTable').innerHTML = '';
+        taskArray.forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
     };
 
     // Allows the user to change the current name of the project once it has been created
