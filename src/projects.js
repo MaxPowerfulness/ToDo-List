@@ -41,7 +41,8 @@ const projectFactory = (name) => {
     };
     addProjectOptions();
     selectProject();
-    table.appendChild(newBody);
+    displayTask();
+    table.insertBefore(newBody, table.firstElementChild);
     
 
 // Methods
@@ -94,12 +95,9 @@ const projectFactory = (name) => {
 
 // Event Listeners
 
-    // Changes background color of row to indicate which project is being selected.
-    newBody.addEventListener('click', () => selectProject());
-
-
-    // 
+    // Changes background color of row to indicate which project is being selected and displays the project's tasks
     newBody.addEventListener('click', () => {
+        selectProject();
         displayTask();
     });
 
