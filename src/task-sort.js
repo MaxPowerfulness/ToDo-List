@@ -1,9 +1,11 @@
+//Global Variables
 const tasks = Object.values(localStorage);
+
+//Functions
+
 
 function sortAllTasksByDate(list) {
     list.sort((a, b) => {
-        console.log('a, b', a.date, b.date);
-        console.log('a > b', a.date > b.date)
         if (a.date > b.date) {
             return 1;
         } else if (a.date === b.date) {
@@ -18,7 +20,6 @@ function displayTodayTasks(list) {
     let currentDate = new Date().toJSON().slice(0, 10);
     let todaysTasks = [];
     list.forEach(task => {
-        console.log('task date', task.date)
         if (task.date == currentDate) {
             todaysTasks.push(task);
         };

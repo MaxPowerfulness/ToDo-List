@@ -1,7 +1,9 @@
 import {taskFactory} from './task-items.js';
+import {displayAllTasks} from './index.js';
 
 //Global variables
-let counter = 0;
+const taskFilters = document.querySelectorAll('.nav-filters li');
+const newTask = document.querySelector('.new-task');
 
 const projectFactory = (name) => {
     // Saving project to local storage
@@ -12,7 +14,6 @@ const projectFactory = (name) => {
     const table = document.getElementById('projectTable');
     const projectHeader = document.querySelector('.project-name');
     const newBody = document.createElement('tbody');
-    newBody.classList.add(`${name}`);
     const newRow = document.createElement('tr');
     const projectName = document.createElement('td');
 
@@ -30,26 +31,36 @@ const projectFactory = (name) => {
             const img = document.createElement('img');
             img.src = projectOptions[i];
             if (iconNames[i] === 'edit') {
-                img.addEventListener('click', () => editProjectName());
+                newCell.addEventListener('click', () => editProjectName());
             } else {
-                img.addEventListener('click', () => removeProject());
+                newCell.addEventListener('click', () => {
+                    removeProject();
+                    if (document.querySelectorAll('tbody').length === 0) { // Defaults to all tasks if no projects are present
+                        displayAllTasks();
+                        newTask.style.display = 'none';
+                    } else { // Selects the next project in the table if current project is deleted
+                        document.querySelectorAll('tbody')[0].style.backgroundColor = "#DB7F8E";
+                        document.querySelectorAll('tbody')[0].querySelectorAll('td').forEach(cell => cell.style.borderColor = "#ffdbda");
+                        projectHeader.textContent = document.querySelectorAll('tbody')[0].querySelector('tr > td').textContent;
+                        displayTask(document.querySelectorAll('tbody')[0].textContent);
+                    };
+                });
             };
             newCell.appendChild(img);
             newRow.appendChild(newCell);
         };
-        counter++
     };
     addProjectOptions();
     selectProject();
-    displayTask();
+    displayTask(name);
     table.insertBefore(newBody, table.firstElementChild);
     
 
 // Methods
 
     // Clears the task table and loads in project specific tasks
-    function displayTask() {
-        let taskArray = JSON.parse(localStorage.getItem(`${name}`));
+    function displayTask(name) {
+        let taskArray = JSON.parse(localStorage.getItem(name));
         document.getElementById('taskTable').innerHTML = '';
         taskArray.forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
     };
@@ -88,17 +99,24 @@ const projectFactory = (name) => {
 
     // Highlights the project on the project table and changes the project name header
     function selectProject() {
-        document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: transparent;")
-        newBody.style.cssText = "background-color: rgb(255, 255, 255, 0.5);"
+        document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: #C3ACAC;");
+        newBody.style.cssText = "background-color: #DB7F8E;"
+        newTask.style.display = 'block';
+        document.querySelectorAll('td').forEach(cell => cell.style.borderColor = "#604D53");
+        newBody.querySelectorAll('td').forEach(cell => cell.style.borderColor = "#ffdbda");
         projectHeader.textContent = name;
     }
 
 // Event Listeners
 
     // Changes background color of row to indicate which project is being selected and displays the project's tasks
-    newBody.addEventListener('click', () => {
+    projectName.addEventListener('click', () => {
+        taskFilters.forEach(filter => {
+            filter.style.backgroundColor = '#C3ACAC';
+            filter.style.borderColor = '#604D53';
+        });
         selectProject();
-        displayTask();
+        displayTask(name);
     });
 
     return {editProjectName};

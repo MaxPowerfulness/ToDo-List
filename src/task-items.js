@@ -1,5 +1,4 @@
 // Globabl varibales
-import { add } from "date-fns";
 const overlay = document.getElementById('backdrop');
 
 // Factory function usesd to create and append new tasks to the task table. 
@@ -14,13 +13,13 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
     // Sets border color to indiciate priority level of a task item
     switch (priority) {
         case 'High':
-            taskInfo.style.cssText = 'border-left: 3px solid red;';
+            taskInfo.style.cssText = 'border-left: 3px solid #e62a00;';
             break
         case 'Medium':
-            taskInfo.style.cssText = 'border-left: 3px solid yellow;';
+            taskInfo.style.cssText = 'border-left: 3px solid #ffaf00;';
             break
         case 'Low':
-            taskInfo.style.cssText = 'border-left: 3px solid green;';
+            taskInfo.style.cssText = 'border-left: 3px solid #00e62a;';
             break
     };
 
@@ -75,13 +74,13 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         taskPriority.textContent = priority;
         switch (priority) { // Sets task card border depending on priority level
             case 'High':
-                viewContainer.style.cssText = 'border: 3px solid red;';
+                viewContainer.style.cssText = 'border: 3px solid #e62a00;';
                 break
             case 'Medium':
-                viewContainer.style.cssText = 'border: 3px solid yellow;';
+                viewContainer.style.cssText = 'border: 3px solid #ffaf00;';
                 break
             case 'Low':
-                viewContainer.style.cssText = 'border: 3px solid green;';
+                viewContainer.style.cssText = 'border: 3px solid #00e62a;';
                 break
         };
         if (event) {
@@ -125,7 +124,7 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         saveBtn.addEventListener('click', () => {
             // Updates local storage
             document.querySelectorAll('tbody').forEach(project => { // Looks for project in storage
-                if (project.style.backgroundColor == "rgba(255, 255, 255, 0.5)") {
+                if (project.style.backgroundColor == "#DB7F8E") {
                     let storedProject = JSON.parse(localStorage.getItem(`${project.firstElementChild.firstElementChild.textContent}`));
                     storedProject.forEach(task => {
                         if (task.title == taskName.textContent) { // Iterates through the task and updates each property
@@ -165,7 +164,7 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
     function deleteTableRow() {
         table.removeChild(newRow);
         document.querySelectorAll('tbody').forEach(project => { // Removes task from local storage
-            if (project.style.backgroundColor == "rgba(255, 255, 255, 0.5)") {
+            if (project.style.backgroundColor == "#DB7F8E") {
                 let storedProject = JSON.parse(localStorage.getItem(`${project.firstElementChild.firstElementChild.textContent}`));
                 storedProject.forEach(task => {
                     if (task.title == `${title}`) {

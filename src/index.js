@@ -19,18 +19,35 @@ const today = document.querySelector('.today');
 const thisWeek = document.querySelector('.week');
 const thisMonth = document.querySelector('.month');
 const priorityView = document.querySelector('.priority');
+const taskFilters = document.querySelectorAll('.nav-filters li');
+
 
 // Task view Event Listeners
 
+
 all.addEventListener('click', () => {
-    const allTasks = createMergedTaskList()
-    sortAllTasksByDate(allTasks);
-    document.getElementById('taskTable').innerHTML = '';
-    allTasks.forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
-    projectHeader.textContent = "All";
+    taskFilters.forEach(filter => {
+        filter.style.backgroundColor = '#C3ACAC';
+        filter.style.borderColor = '#604D53';
+    });
+    newTask.style.display = 'none';
+    all.style.backgroundColor = '#DB7F8E';
+    all.style.borderColor = '#ffdbda';
+    document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: #C3ACAC;");
+    document.querySelectorAll('tbody td').forEach(project => project.style.cssText = "border-color: #604D53;");
+    displayAllTasks();
 });
 
 today.addEventListener('click', () => {
+    taskFilters.forEach(filter => {
+        filter.style.backgroundColor = '#C3ACAC';
+        filter.style.borderColor = '#604D53';
+    });
+    newTask.style.display = 'none';
+    today.style.backgroundColor = '#DB7F8E'
+    today.style.borderColor = '#ffdbda';
+    document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: #C3ACAC;");
+    document.querySelectorAll('tbody td').forEach(project => project.style.cssText = "border-color: #604D53;");
     const allTasks = createMergedTaskList();
     document.getElementById('taskTable').innerHTML = '';
     displayTodayTasks(allTasks).forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
@@ -38,6 +55,15 @@ today.addEventListener('click', () => {
 });
 
 thisWeek.addEventListener('click', () => {
+    taskFilters.forEach(filter => {
+        filter.style.backgroundColor = '#C3ACAC';
+        filter.style.borderColor = '#604D53';
+    });
+    newTask.style.display = 'none';
+    thisWeek.style.backgroundColor = '#DB7F8E';
+    thisWeek.style.borderColor = '#ffdbda';
+    document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: #C3ACAC;");
+    document.querySelectorAll('tbody td').forEach(project => project.style.cssText = "border-color: #604D53;");
     const allTasks = createMergedTaskList();
     document.getElementById('taskTable').innerHTML = '';
     displayWeekTasks(allTasks).forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
@@ -45,6 +71,15 @@ thisWeek.addEventListener('click', () => {
 });
 
 thisMonth.addEventListener('click', () => {
+    taskFilters.forEach(filter => {
+        filter.style.backgroundColor = '#C3ACAC';
+        filter.style.borderColor = '#604D53';
+    });
+    newTask.style.display = 'none';
+    thisMonth.style.backgroundColor = '#DB7F8E';
+    thisMonth.style.borderColor = '#ffdbda';
+    document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: #C3ACAC;");
+    document.querySelectorAll('tbody td').forEach(project => project.style.cssText = "border-color: #604D53;");
     const allTasks = createMergedTaskList();
     document.getElementById('taskTable').innerHTML = '';
     displayMonthTasks(allTasks).forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
@@ -52,6 +87,15 @@ thisMonth.addEventListener('click', () => {
 });
 
 priorityView.addEventListener('click', () => {
+    taskFilters.forEach(filter => {
+        filter.style.backgroundColor = '#C3ACAC';
+        filter.style.borderColor = '#604D53';
+    });
+    newTask.style.display = 'none';
+    priorityView.style.backgroundColor = '#DB7F8E';
+    priorityView.style.borderColor = '#ffdbda';
+    document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: #C3ACAC;");
+    document.querySelectorAll('tbody td').forEach(project => project.style.cssText = "border-color: #604D53;");
     const allTasks = createMergedTaskList();
     sortAllTasksByDate(allTasks);
     document.getElementById('taskTable').innerHTML = '';
@@ -59,13 +103,21 @@ priorityView.addEventListener('click', () => {
     projectHeader.textContent = "Priority";
 });
 
+
 // Task table Event Listeners
 
+
 // Opens new task form when new task button is selected
-newTask.addEventListener('click', () => taskFormContainer.style.display = 'block');
+newTask.addEventListener('click', () => {
+    taskFormContainer.style.display = 'block';
+    overlay.classList.toggle('overlay');
+});
 
 // Closes task form when cancel is clicked
-taskCancelBtn.addEventListener('click', () => taskFormContainer.style.display = 'none');
+taskCancelBtn.addEventListener('click', () => {
+    taskFormContainer.style.display = 'none';
+    overlay.classList.toggle('overlay');
+});
 
 // Creates a new row (task item) in the task table and adds functionality to task buttons on form submit
 taskItemForm.addEventListener('submit', (event) => {
@@ -73,7 +125,7 @@ taskItemForm.addEventListener('submit', (event) => {
     taskFormContainer.style.display = 'none';
     taskFactory(document.getElementById('title').value, document.getElementById('description').value, document.getElementById('date').value, document.getElementById('time').value, document.getElementById('priority').value);
     document.querySelectorAll('tbody').forEach(project => {
-        if (project.style.backgroundColor == "rgba(255, 255, 255, 0.5)") {
+        if (project.style.backgroundColor == "rgb(219, 127, 142)") {
             let storedProject = JSON.parse(localStorage.getItem(`${project.firstElementChild.firstElementChild.textContent}`));
             let task = {
                 title: document.getElementById('title').value,
@@ -86,34 +138,57 @@ taskItemForm.addEventListener('submit', (event) => {
             localStorage.setItem(`${project.firstElementChild.firstElementChild.textContent}`, JSON.stringify(storedProject));
         };
     });
+    [document.getElementById('title'), document.getElementById('description'), document.getElementById('date'), document.getElementById('time'), document.getElementById('priority')].forEach(input => input.value = ""); // Clears form on submit
+    overlay.classList.toggle('overlay');
 });
+
 
 // Project Event Listeners
 
+
 // Opens new project form when new task button is selected
-newProject.addEventListener('click', () => projectFormContainer.style.display = 'block');
+newProject.addEventListener('click', () => {
+    overlay.classList.toggle('overlay');
+    projectFormContainer.style.display = 'block';
+});
 
 // Closes project form when cancel is clicked
-projectCancelBtn.addEventListener('click', () => projectFormContainer.style.display = 'none');
+projectCancelBtn.addEventListener('click', () => {
+    projectFormContainer.style.display = 'none';
+    overlay.classList.toggle('overlay');
+});
 
 projectForm.addEventListener('submit', (event) => {
     event.preventDefault();
     projectFormContainer.style.display = 'none';
     projectFactory(document.getElementById('projectName').value);
+    document.getElementById('projectName').value = "";
+    overlay.classList.toggle('overlay');
 });
 
 // Removes overlay from card view and removes card from DOM
 overlay.addEventListener('click', () => {
-    overlay.classList.toggle('overlay')
+    overlay.classList.toggle('overlay');
+    taskFormContainer.style.display = 'none';
+    projectFormContainer.style.display = 'none';
     document.body.removeChild(document.querySelector('.view-container'));
 })
 
 
 // Functions
 
+
 // Creates a default task to give users an example
 function initialize() {
     taskFactory('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High');
+};
+
+function displayAllTasks() {
+    const allTasks = createMergedTaskList()
+    sortAllTasksByDate(allTasks);
+    document.getElementById('taskTable').innerHTML = '';
+    allTasks.forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
+    projectHeader.textContent = "All";
 };
 
 // Creates a list of all tasks saved in the local storage and returns it
@@ -129,3 +204,5 @@ function createMergedTaskList() {
 }
 
 initialize();
+
+export {displayAllTasks}
