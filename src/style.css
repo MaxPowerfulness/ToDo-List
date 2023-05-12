@@ -1,9 +1,9 @@
-/* CSS reset */
 @font-face {
     font-family: 'micro';
     src: url('../MicroFLF.ttf');
 }
 
+/* CSS reset and general rules */
 * {
     margin: 0px;
     padding: 0px;
@@ -32,7 +32,8 @@ button:hover,
 .nav-filters li:hover,
 .new-project:hover,
 tbody:hover,
-.new-task {
+.new-task,
+.task-icon:hover {
     cursor: grab;
 }
 
@@ -50,7 +51,7 @@ tbody:hover,
     --pink: #DB7F8E;
     --rose-quartz: #C3ACAC;
     --brown: #604D53;
-
+    --light-brown: rgb(96, 77, 83, 0.7);
 }
 
 /* Header */
@@ -73,7 +74,7 @@ header img {
 nav {
     position: fixed;
     background-color: var(--french-grey);
-    width: 15%;
+    width: 16.5%;
     height: 90vh;
     border-right: 2px solid rgba(0,0,0,0.7);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -103,9 +104,11 @@ nav {
 
 #projectTable {
     border-collapse: separate;
+    display: block;
     border-spacing: 0 10px;
     padding: 0px 0px var(--med-spacing) var(--section-space);
-
+    height: 400px;
+    overflow: auto;
 }
 
 tbody {
@@ -114,7 +117,6 @@ tbody {
 }
 
 #projectTable tbody > tr > td {
-    width: 100%;
     transition: border-color 0.2s linear;
     padding: 5px;
 }
@@ -132,6 +134,7 @@ tbody {
     border-left: 1px solid var(--brown);
     border-top-left-radius: var(--border-radius); 
     border-bottom-left-radius: var(--border-radius); 
+    width: 65%;
 }
 
 #projectTable td:last-child {
@@ -145,7 +148,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 85%;
+    width: 83.5%;
     margin-left: 15%;
 }
 
@@ -239,15 +242,57 @@ label textarea {
 
 
 .view-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--med-spacing); 
+    padding: var(--med-spacing) var(--section-space) var(--section-space) var(--section-space);
     position: fixed;
     left: 50%;
     top: 30%;
     margin-left: -7.5%;   
-    width: 15%;
-    height: 40%;
+    width: 350px;
+    height: 400px;
     z-index: 2;
     background-color: var(--pink);
+    border: 3px solid var(--brown);
     border-radius: var(--border-radius);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.task-item {
+    width: 200px;
+}
+
+.task-label {
+    width: 100px;
+}
+
+.task-info-container {
+    display: flex;
+    height: 50px;
+    gap: var(--large-spacing);
+    padding-bottom: var(--section-space);
+    border-bottom: 1px solid var(--light-brown);
+}
+
+.task-info-container textarea {
+    height: 42px;
+    width: 160px;
+}
+
+.view-container button {
+    width: 15%;
+    align-self: flex-end;
+}
+
+.description {
+    height: 70px;
+}
+
+.description .task-item {
+    overflow-y: scroll;
+    font-size: 12px;
+    height: 60px;
 }
 
 .overlay {

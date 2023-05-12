@@ -11,7 +11,7 @@
     <div id="backdrop"></div>
     <div id="projectFormContainer" class="form-container">
         <form id="projectForm" action="">
-            <p><label for="projectName">Name: <input type="text" name="" id="projectName"></label></p>
+            <p><label for="projectName">Name*: <input type="text" name="" id="projectName" required></label></p>
             <div class="btnContainer">
                 <button class='project-cancel' type="button">Cancel</button>
                 <button>Add</button>
@@ -34,8 +34,10 @@
                 <h3>Projects</h3>
                 <p class="new-project">+New</p>
             </div>
-            <table id="projectTable">
-            </table>
+            <div class="project-table-container">
+                <table id="projectTable">
+                </table>
+            </div>
         </div>
     </nav>
     <main>
@@ -46,7 +48,7 @@
         </div>
         <div id="taskItemFormContainer" class="form-container">
             <form id="taskItemForm" action="">
-                <p><label for="title" >Title: <input type="text" id="title"></label></p>
+                <p><label for="title" >Title*: <input type="text" id="title" required></label></p>
                 <p><label for="description" >Description: <textarea id="description" name="" id="" cols="30" rows="10"></textarea></label></p>
                 <p><label for="date">Due Date: <input id="date" type="date"></label></p>
                 <p><label for="time">Due Time: <input id="time" type="time"></label></p>

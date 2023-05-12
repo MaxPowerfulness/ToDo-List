@@ -23,7 +23,7 @@ const taskFilters = document.querySelectorAll('.nav-filters li');
 
 
 // Task view Event Listeners
-
+// Filter tasks based on due date or priority
 
 all.addEventListener('click', () => {
     taskFilters.forEach(filter => {
@@ -31,8 +31,6 @@ all.addEventListener('click', () => {
         filter.style.borderColor = '#604D53';
     });
     newTask.style.display = 'none';
-    all.style.backgroundColor = '#DB7F8E';
-    all.style.borderColor = '#ffdbda';
     document.querySelectorAll('tbody').forEach(project => project.style.cssText = "background-color: #C3ACAC;");
     document.querySelectorAll('tbody td').forEach(project => project.style.cssText = "border-color: #604D53;");
     displayAllTasks();
@@ -106,7 +104,6 @@ priorityView.addEventListener('click', () => {
 
 // Task table Event Listeners
 
-
 // Opens new task form when new task button is selected
 newTask.addEventListener('click', () => {
     taskFormContainer.style.display = 'block';
@@ -125,7 +122,7 @@ taskItemForm.addEventListener('submit', (event) => {
     taskFormContainer.style.display = 'none';
     taskFactory(document.getElementById('title').value, document.getElementById('description').value, document.getElementById('date').value, document.getElementById('time').value, document.getElementById('priority').value);
     document.querySelectorAll('tbody').forEach(project => {
-        if (project.style.backgroundColor == "rgb(219, 127, 142)") {
+        if (project.style.backgroundColor == "rgb(219, 127, 142)") { // Selects the currently highlighted project (key) and saves the task to it as an object in an array (value)
             let storedProject = JSON.parse(localStorage.getItem(`${project.firstElementChild.firstElementChild.textContent}`));
             let task = {
                 title: document.getElementById('title').value,
@@ -144,7 +141,6 @@ taskItemForm.addEventListener('submit', (event) => {
 
 
 // Project Event Listeners
-
 
 // Opens new project form when new task button is selected
 newProject.addEventListener('click', () => {
@@ -177,16 +173,20 @@ overlay.addEventListener('click', () => {
 
 // Functions
 
-
 // Creates a default task to give users an example
 function initialize() {
     taskFactory('Test Task', 'Test Description', '11-11-11', '11:00 AM', 'High');
+    const projectsFromLocal = Object.keys(localStorage);
+    projectsFromLocal.forEach(project => projectFactory(project, 'init')); // Grabs all projects saved in local storage and loads them in the project sidebar
 };
 
+// Displays all the tasks saved in the local storage and displays them on the dashboard
 function displayAllTasks() {
     const allTasks = createMergedTaskList()
     sortAllTasksByDate(allTasks);
     document.getElementById('taskTable').innerHTML = '';
+    all.style.backgroundColor = '#DB7F8E';
+    all.style.borderColor = '#ffdbda';
     allTasks.forEach(task => taskFactory(task.title, task.description, task.date, task.time, task.priority));
     projectHeader.textContent = "All";
 };

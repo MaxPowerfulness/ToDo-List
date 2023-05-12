@@ -1,5 +1,6 @@
 // Globabl varibales
 const overlay = document.getElementById('backdrop');
+const taskLabels = ['Title:', 'Description:', 'Date:', 'Time:', 'Priority:'];
 
 // Factory function usesd to create and append new tasks to the task table. 
 const taskFactory = (title, description, dueDate, dueTime, priority) => {
@@ -30,6 +31,7 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         for (let i = 0; i <= 2; i++) { // Adds event listeners for icon function specific to the task
             const newCell = document.createElement('td');
             const img = document.createElement('img');
+            img.classList.add('task-icon');
             img.src=taskOptions[i];
             if (iconNames[i] === 'edit') {
                 img.addEventListener('click', (event) => {
@@ -59,40 +61,51 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
     function viewTask(title, description, dueDate, dueTime, priority, event) {
         const viewContainer = document.createElement('div');
         viewContainer.classList.add('view-container');
-        const taskName = document.createElement('h1');
+        const taskName = document.createElement('p');
         const taskDescription = document.createElement('p');
-        const taskDueDate = document.createElement('span');
-        const taskDueTime = document.createElement('span');
+        const taskDueDate = document.createElement('p');
+        const taskDueTime = document.createElement('p');
         const taskPriority = document.createElement('p');
-        let taskItems = [taskName, taskDueDate, taskDueTime, taskDescription, taskPriority]; // List for appending task elements into viewContainer
-    
+        const closeBtn = document.createElement('button'); 
+
+        let taskItems = [taskName, taskDescription, taskDueDate, taskDueTime, taskPriority, closeBtn]; // List for appending task elements into viewContainer
+        taskItems.forEach(task => task.classList.add('task-item'));
 
         taskName.textContent = title;
         taskDescription.textContent = description;
         taskDueDate.textContent = dueDate;
         taskDueTime.textContent = dueTime;
         taskPriority.textContent = priority;
-        switch (priority) { // Sets task card border depending on priority level
-            case 'High':
-                viewContainer.style.cssText = 'border: 3px solid #e62a00;';
-                break
-            case 'Medium':
-                viewContainer.style.cssText = 'border: 3px solid #ffaf00;';
-                break
-            case 'Low':
-                viewContainer.style.cssText = 'border: 3px solid #00e62a;';
-                break
-        };
-        if (event) {
-            const editables = editTask(taskName, taskItems);
-            editables.forEach(task => viewContainer.appendChild(task));
-        } else {
-            taskItems.forEach(task => viewContainer.appendChild(task));
+        closeBtn.textContent = 'Close';
+        closeBtn.addEventListener('click', () => {
+            viewContainer.style.display = 'none';
+            overlay.classList.toggle('overlay');
+        });
+        
+        const editables = editTask(taskName, taskItems); // List of editable input elements corresponding to each task component
+
+        for (let i = 0; i < taskItems.length; i++) {
+            const taskInfoContainer = document.createElement('div');
+            taskInfoContainer.classList.add('task-info-container');
+            if (taskItems[i] === taskDescription) {
+                taskInfoContainer.classList.add('description');
+            };
+
+            const taskLabel = document.createElement('p');
+            taskLabel.classList.add('task-label');
+            taskLabel.textContent = taskLabels[i];
+            
+            if (event) {
+                taskInfoContainer.append(taskLabel, editables[i]);
+            } else {
+                taskInfoContainer.append(taskLabel, taskItems[i]);
+            }
+            viewContainer.appendChild(taskInfoContainer);
         };
         document.body.insertBefore(viewContainer, document.getElementById('backdrop'));
     };
 
-    // Allows users to edit task information once they are already created
+    // Allows users to edit task information once they are already created. Takes in the name of the task being edited and a list of each task component and returns a list of editable input elements for each task component
     function editTask(taskName, taskItemList) {
         // Creates select element that is avialable when user wants to edit priority level from card view
         let priorityLevel = ['High', 'Medium', 'Low'];
@@ -160,7 +173,7 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         return editableList
     };
 
-    // Removes row from table
+    // Removes a row from table
     function deleteTableRow() {
         table.removeChild(newRow);
         document.querySelectorAll('tbody').forEach(project => { // Removes task from local storage

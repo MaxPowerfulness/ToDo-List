@@ -5,10 +5,11 @@ import {displayAllTasks} from './index.js';
 const taskFilters = document.querySelectorAll('.nav-filters li');
 const newTask = document.querySelector('.new-task');
 
-const projectFactory = (name) => {
-    // Saving project to local storage
-    localStorage.setItem(`${name}`, JSON.stringify([]))
-
+const projectFactory = (name, init) => {
+// Saving project to local storage
+if (!init) { // Prevents local storage from being overridden when called upon page refresh to load project side table
+    localStorage.setItem(`${name}`, JSON.stringify([]));
+};
 // Adding project to table
 
     const table = document.getElementById('projectTable');
@@ -22,6 +23,7 @@ const projectFactory = (name) => {
     newBody.appendChild(newRow);
     newRow.appendChild(projectName);
 
+    // Creates project specific functions and adds functionality (edit name and remove)
     const addProjectOptions = () => {
         let projectOptions = ['./images/edit.svg', './images/icons8-trash-30.png'];
         let iconNames = [`edit`, `trash`];
@@ -35,7 +37,7 @@ const projectFactory = (name) => {
             } else {
                 newCell.addEventListener('click', () => {
                     removeProject();
-                    if (document.querySelectorAll('tbody').length === 0) { // Defaults to all tasks if no projects are present
+                    if (document.querySelectorAll('tbody').length === 0) { // Defaults to display all tasks if no projects are present
                         displayAllTasks();
                         newTask.style.display = 'none';
                     } else { // Selects the next project in the table if current project is deleted

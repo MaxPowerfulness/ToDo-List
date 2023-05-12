@@ -3,7 +3,7 @@ const tasks = Object.values(localStorage);
 
 //Functions
 
-
+// Takes in a list of tasks and sorts them in order by date ascending
 function sortAllTasksByDate(list) {
     list.sort((a, b) => {
         if (a.date > b.date) {
@@ -16,6 +16,7 @@ function sortAllTasksByDate(list) {
     });
 };
 
+// Takes in a list and returns a list of tasks that have due dates that match the current date
 function displayTodayTasks(list) {
     let currentDate = new Date().toJSON().slice(0, 10);
     let todaysTasks = [];
@@ -28,6 +29,7 @@ function displayTodayTasks(list) {
     return todaysTasks;
 };
 
+// Takes in a list and returns a list of tasks that have due dates within a week from the current date
 function displayWeekTasks(list) {
     let weekTasks = [];
     let weekOutDates = [];
@@ -44,6 +46,7 @@ function displayWeekTasks(list) {
     return weekTasks;
 };
 
+// Takes in a list and returns a list of tasks that have due dates within a month from the current date
 function displayMonthTasks(list) {
     let monthTasks = [];
     let monthOutDates = [];
@@ -59,6 +62,7 @@ function displayMonthTasks(list) {
     return monthTasks;
 };
 
+// Takes in a list and returns a list of tasks are ordered by highest to lowest priorirty
 function displayByPriority(list) {
     let priorityTasks = [];
     const priorityLevels = ['High', 'Medium', 'Low'];
