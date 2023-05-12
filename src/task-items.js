@@ -51,6 +51,9 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         };
     };
     
+    // Adds line through task to indicate completion
+    newRow.addEventListener('click', () => newRow.classList.toggle('strike'));
+    
     newRow.appendChild(taskInfo);
     addTaskOptions();
     table.appendChild(newRow);
