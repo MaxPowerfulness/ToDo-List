@@ -52,7 +52,7 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
     };
     
     // Adds line through task to indicate completion
-    newRow.addEventListener('click', () => newRow.classList.toggle('strike'));
+    taskInfo.addEventListener('click', () => newRow.classList.toggle('strike'));
     
     newRow.appendChild(taskInfo);
     addTaskOptions();
@@ -81,7 +81,7 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         taskPriority.textContent = priority;
         closeBtn.textContent = 'Close';
         closeBtn.addEventListener('click', () => {
-            viewContainer.style.display = 'none';
+            document.body.removeChild(document.querySelector('.view-container'));
             overlay.classList.toggle('overlay');
         });
         
@@ -117,6 +117,9 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
             const option = document.createElement('option');
             option.setAttribute('value', priorityLevel[i]);
             option.textContent = priorityLevel[i];
+            if (priority === priorityLevel[i]) {
+                option.setAttribute('selected', 'selected');
+            }
             editablePriority.appendChild(option);
         }
 
@@ -140,7 +143,7 @@ const taskFactory = (title, description, dueDate, dueTime, priority) => {
         saveBtn.addEventListener('click', () => {
             // Updates local storage
             document.querySelectorAll('tbody').forEach(project => { // Looks for project in storage
-                if (project.style.backgroundColor == "#DB7F8E") {
+                if (project.style.backgroundColor == "rgb(219, 127, 142)") {
                     let storedProject = JSON.parse(localStorage.getItem(`${project.firstElementChild.firstElementChild.textContent}`));
                     storedProject.forEach(task => {
                         if (task.title == taskName.textContent) { // Iterates through the task and updates each property
